@@ -5,16 +5,14 @@ class person:
     Name='',
     country='',
     DOB='',
-    todaysDate=2024
-    age()
-    {
-        todaysDate-DOB
-    }
+    
+    todaysDate= 2025
+    def totalage():
+       return (person.todaysDate-person.DOB)
 
 
-person.DOB=(input("enter the date of birth  of a person"))
-todaysDate=(input("enter todays date"))
+person.DOB=(int(input("enter the date of birth  of a person")))
 
-age= age()
 
-print(f"age is{age} ")
+print(person.totalage())
+
