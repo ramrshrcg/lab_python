@@ -35,8 +35,15 @@ class Car:
 
     def startCar(self):
         self.engine.start()
+        self.wheel.start()
+        print("Car started")
+    
+    def stopcar(self):
+        self.engine.stop()
+        self.wheel.stop()
         print("Car started")
 
 
 my_car = Car("Petrol", "tubeless")
 my_car.startCar()
+my_car.stopcar()

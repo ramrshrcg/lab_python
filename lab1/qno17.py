@@ -1,7 +1,7 @@
 class BankAccount:
     def __init__(self, account_number, initial_balance=0):
-        self.__account_number = account_number  # Private attribute
-        self.__balance = initial_balance  # Private attribute
+        self.__account_number = account_number  
+        self.__balance = initial_balance  
 
     def deposit(self, amount):
         if amount > 0:
@@ -27,7 +27,6 @@ class BankAccount:
     def get_account_number(self):
         return self.__account_number
 
-# Example usage
 account = BankAccount("123456789", 1000)
 account.deposit(500)         
 account.withdraw(300)           
