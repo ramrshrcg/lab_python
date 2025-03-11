@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fashion Image Recommender</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f9f9f9;
+            text-align: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Image Grid */
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            max-width: 900px;
+            margin: auto;
+            justify-content: center;
+        }
+
+        /* Image Card */
+        .image-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .image-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Image Styling */
+        .image-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .image-card img:hover {
+            transform: scale(1.08);
+        }
+
+        /* Recommended Images Section */
+        #recommendation-container {
+            display: none;
+            margin-top: 30px;
+        }
+
+        .recommendation-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .recommendation-grid {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .recommendation-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .recommendation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .recommendation-card img {
+            width: 150px;
+            height: auto;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .recommendation-card img:hover {
+            transform: scale(1.08);
+        }
+    </style>
+
+
+</head>
+<body>
+
+    <h1>Fashion Image Recommender</h1>
+
+    <div class="image-grid" id="image-container">
+        {% for img in images %}
+        <div class="image-card">
+            <img src="{{ url_for('static', filename='images/'+img) }}" onclick="getRecommendations('{{ img }}')">
+        </div>
+        {% endfor %}
+
+
+    </div>
+
+    <hr><hr>
+
+    <!--  Recommendations Section -->
+    <div id="recommendation-container">
+        <h2 class="recommendation-title">Top 4 Recommendations</h2>
+        <div class="recommendation-grid" id="recommendation-grid"></div>
+    </div> 
+
+
+
+
+    <script>
+        function getRecommendations(imgName) {
+            $.ajax({
+                type: "POST",
+                url: "/recommend",
+                contentType: "application/json",
+                data: JSON.stringify({ image: imgName }),
+                success: function(response) {
+                    let recommendations = response.recommendations;
+                    let container = $("#recommendation-container");
+                    let grid = $("#recommendation-grid");
+
+                    grid.empty(); // Clear previous recommendations
+                    recommendations.forEach(function(img) {
+                        let imgElement = `<div class="recommendation-card">
+                                            <img src="static/images/${img}" alt="Recommended Image">
+                                          </div>`;
+                        grid.append(imgElement);
+                    });
+
+                    container.fadeIn(); // Show the section
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
